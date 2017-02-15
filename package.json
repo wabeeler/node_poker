@@ -1,0 +1,22 @@
+{
+  "name": "node_poker",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "single": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wabeeler/node_poker.git"
+  },
+  "author": "Brad Beeler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wabeeler/node_poker/issues"
+  },
+  "homepage": "https://github.com/wabeeler/node_poker#readme",
+  "devDependencies": {
+  }
+}
