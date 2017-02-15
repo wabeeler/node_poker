@@ -2,10 +2,6 @@
 
 class Card {
 
-  static get card() {
-    return this.card;
-  }
-
   constructor(cardStr) {
     const values = {
       '2' : 2,
@@ -23,21 +19,20 @@ class Card {
       'A' : 14
     };
 
-    const suits = ['C', 'D', 'H', 'S'];
-
-    if( cardStr.length !== 2 || !values.hasOwnProperty(cardStr[0]) || !suits.hasOwnProperty(cardsStr[1]) ) {
-      throw new Error('Invalid Card', cardStr);
-    }
-
-    console.log("HERE");
-
-    this.card = {
-      'orig' : cardStr,
-      'value': values[cardStr[0]],
-      'suit': cardStr[1]
+    const suits = {
+      'C': true,
+      'D': true,
+      'H': true,
+      'S': true
     };
 
-    console.log("Card", card);
+    if( cardStr.length !== 2 || !values.hasOwnProperty(cardStr[0]) || !suits.hasOwnProperty(cardStr[1]) ) {
+      throw Error('Invalid Card = ' + cardStr);
+    }
+
+    this.orig = cardStr;
+    this.value = values[cardStr[0]],
+    this.suit = cardStr[1]
   }
 }
 
