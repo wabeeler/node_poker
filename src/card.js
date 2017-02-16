@@ -27,7 +27,7 @@ class Card {
     };
 
     if( cardStr.length !== 2 || !values.hasOwnProperty(cardStr[0]) || !suits.hasOwnProperty(cardStr[1]) ) {
-      throw Error('Invalid Card = ' + cardStr);
+      throw new Error('Invalid Card = ' + cardStr);
     }
 
     this.orig = cardStr;

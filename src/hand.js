@@ -181,6 +181,30 @@ class Hand {
 
     return foak;
   }
+
+  // by sorting the array and because we use numeric values, the last element will be the hightest value card
+  getHighCard() {
+    let cardVals = this.getValueArray();
+
+    cardVals.sort( (x,y) => { return x - y; });
+
+    return cardVals.pop();
+  }
+
+  // this method will look through the card values finding all values with the given count
+  // ex hand = ['2C', '2D', '5S', '5D', '9H']
+  // getGroupValues(2) will return [2,5]
+  getGroupValue(count) {
+    let values = [];
+    for( var x in this.values ) {
+      if( this.values[x] === count ) {
+        values.push(x);
+      }
+    }
+
+    return values;
+  }
+
 }
 
 module.exports = Hand;

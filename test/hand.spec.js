@@ -187,7 +187,7 @@ describe('Hand Class', function() {
     
     beforeEach(function() {
       Hand = new hand(handPair);
-      calculateSpy = sinon.spy(Hand, 'calculateScore');
+      calculateSpy = sandbox.spy(Hand, 'calculateScore');
     });
 
     it('should call calculateScore', function() {

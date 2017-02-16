@@ -21,11 +21,13 @@
  *
  */
 
+const BLACK = 'black winner';
+const WHITE = 'white winner';
+const TIE = 'tie';
+
 class Poker {
   constructor( black, white ) {
     // Constants used to push winner to caller
-    const BLACK = 'black winner';
-    const WHITE = 'white winner';
 
     // Hold on to the original hands in case we need to reference them later
     this.black = black;
@@ -36,8 +38,6 @@ class Poker {
 
     this.blackHand = new Hand(black);
     this.whiteHand = new Hand(white);
-
-    this.determineWinner();
   }
 
   determineWinner() {
@@ -46,25 +46,116 @@ class Poker {
   
     // Check for shortcut and be sure that we don't need to check for the rules
     // with a count of 5 that might be better other hands
-    if( (blackCount < whiteCount && whiteCount !== 5) ||
-        this.blackHand.score() > this.whiteHand.score() ) {
-      console.log("BLACK WINS");
-      return this.BLACK;
+    if( blackCount < whiteCount || this.blackHand.score() > this.whiteHand.score() ) {
+      return BLACK;
     }
-    else if( this.blackHand.score() === this.whiteHand.score() {
+    else if( this.blackHand.score() === this.whiteHand.score() ) {
+      console.log("Comparing winner");
       this.compareEqual();
     }
     else {
       console.log("WHITE WINS");
-      return this.WHITE;
+      return WHITE;
     }
-
-    // TODO have to account for two hands having the same score
-
   }
 
   compareEqual() {
+    if( this.blackHand.score() !== this.whiteHand.score() ) {
+      throw new Error('compareEqual, Error scores not equal, Black Score = ' + this.blackHand.score() + ', White Score = ' + this.whiteHand.score());
+    }
 
+    // because we now know that the scores are equal we can branch on one
+    switch( this.blackHand.score() ) {
+      case 1:
+        return this.compareHighCards();
+        break;
+
+      case 5:
+      case 6:
+      case 9:
+        return this.blackHand.getHighCard() > this.whiteHand.getHighCard() ? BLACK : WHITE;
+        break;
+
+      case 2:
+        return this.comparePair();
+        break;
+
+      case 3:
+        return this.comapreTwoPairs();
+        break;
+
+      case 4:
+      case 7:
+        return this.blackHand.getGroupValue(3)[0] > this.whiteHand.getGroupValue(3)[0] ? BLACK : WHITE;
+        break;
+
+      case 8:
+        return this.blackHand.getGroupValue(4)[0] > this.whiteHand.getGroupValue(4)[0] ? BLACK : WHITE;
+        break;
+    }
+  }
+
+  compareHighCards() {
+    let black = this.blackHand.getValueArray().reverse();
+    let white = this.whiteHand.getValueArray().reverse();
+    let winner = TIE;
+
+    black.some( (value, idx) => {
+      if( value > white[idx] ) {
+        winner = BLACK;
+        return true; // this breaks the some loop
+      }
+      else if( value < white[idx] ) {
+        winner = WHITE;
+        return true;
+      }
+    });
+
+    return winner;
+  }
+
+  comparePair() {
+    let blackPair = this.blackHand.getGroupValue(2)[0];
+    let whitePair = this.whiteHand.getGroupValue(2)[0];
+
+    if( blackPair > whitePair ) {
+      return BLACK;
+    }
+    else if( blackPair < whitePair ) {
+      return WHITE;
+    }
+    else {
+      return this.compareHighCards();
+    }
+  }
+
+  compareTwoPair() {
+    // these will be unordered arrays of the pair values
+    let black = this.blackHand.getGroupValue(2);
+    let white = this.whiteHand.getGroupValue(2);
+    let winner = TIE;
+
+    // TODO turn this sort into a unitily function
+    // these are now sorted descending
+    black.sort( (x,y) => { return y - x; });
+    white.sort( (x,y) => { return y - x; });
+
+    black.some( (value, idx) => {
+      if( value > white[idx] ) {
+        winner = BLACK;
+        return true;
+      }
+      else if( value < white[idx] ) {
+        winner = WHITE;
+        return true;
+      }
+    });
+
+    if( winner === TIE ) {
+      winner = this.compareHighCards();
+    }
+
+    return winner;
   }
 }
 
