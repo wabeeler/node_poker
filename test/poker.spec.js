@@ -8,6 +8,8 @@ var expect = chai.expect;
 
 chai.use(sinonChai);
 
+var winners = require('../src/const');
+
 var sandbox,
     mockHand,
     mockHandMethods,
@@ -64,7 +66,7 @@ describe('Poker Class', function() {
       mockHandMethods.getValueCount.onCall(0).returns(3); // this mocks black having 2 pair or 3 of a kind
       mockHandMethods.getValueCount.onCall(1).returns(4); // this mocks white having a pair
 
-      expect(Poker.determineWinner()).to.equal('black winner');
+      expect(Poker.determineWinner()).to.equal(winners.BLACK);
     });
 
     it('should call compare equal', function() {
@@ -103,21 +105,21 @@ describe('Poker Class', function() {
       mockHandMethods.getValueArray.onCall(0).returns([2,3,5,7,9]);
       mockHandMethods.getValueArray.onCall(1).returns([2,3,4,7,9]);
 
-      expect(Poker.compareHighCards()).to.equal('black winner');
+      expect(Poker.compareHighCards()).to.equal(winners.BLACK);
     });
 
     it('should predict white winner', function() {
       mockHandMethods.getValueArray.onCall(0).returns([2,3,4,7,9]);
       mockHandMethods.getValueArray.onCall(1).returns([2,3,5,7,9]);
 
-      expect(Poker.compareHighCards()).to.equal('white winner');
+      expect(Poker.compareHighCards()).to.equal(winners.WHITE);
     });
 
     it('should reutn a tie', function() {
       mockHandMethods.getValueArray.onCall(0).returns([2,3,5,7,9]);
       mockHandMethods.getValueArray.onCall(1).returns([2,3,5,7,9]);
 
-      expect(Poker.compareHighCards()).to.equal('tie');
+      expect(Poker.compareHighCards()).to.equal(winners.TIE);
     });
   });
 
@@ -132,14 +134,14 @@ describe('Poker Class', function() {
       mockHandMethods.getGroupValue.onCall(0).returns([10]);
       mockHandMethods.getGroupValue.onCall(1).returns([5]);
 
-      expect(Poker.comparePair()).to.equal('black winner');
+      expect(Poker.comparePair()).to.equal(winners.BLACK);
     });
     
     it('should predict white winner', function() {
       mockHandMethods.getGroupValue.onCall(0).returns([2]);
       mockHandMethods.getGroupValue.onCall(1).returns([5]);
 
-      expect(Poker.comparePair()).to.equal('white winner');
+      expect(Poker.comparePair()).to.equal(winners.WHITE);
     });
 
     it('shoudl call compare high card if pairs match', function() {
@@ -151,7 +153,7 @@ describe('Poker Class', function() {
 
       let highCardSpy = sandbox.spy(Poker, 'compareHighCards');
 
-      expect(Poker.comparePair()).to.equal('white winner');
+      expect(Poker.comparePair()).to.equal(winners.WHITE);
       expect(highCardSpy).to.have.been.calledOnce;
     });
   });
@@ -167,14 +169,14 @@ describe('Poker Class', function() {
       mockHandMethods.getGroupValue.onCall(0).returns([2,7]);
       mockHandMethods.getGroupValue.onCall(1).returns([5,6]);
 
-      expect(Poker.compareTwoPair()).to.equal('black winner');
+      expect(Poker.compareTwoPair()).to.equal(winners.BLACK);
     });
     
     it('should declare black on the second pair', function() {
       mockHandMethods.getGroupValue.onCall(0).returns([4,6]);
       mockHandMethods.getGroupValue.onCall(1).returns([2,6]);
 
-      expect(Poker.compareTwoPair()).to.equal('black winner');
+      expect(Poker.compareTwoPair()).to.equal(winners.BLACK);
     });
 
     it('shoudl call compare high card if pairs match', function() {
@@ -186,7 +188,7 @@ describe('Poker Class', function() {
 
       let highCardSpy = sandbox.spy(Poker, 'compareHighCards');
 
-      expect(Poker.comparePair()).to.equal('black winner');
+      expect(Poker.comparePair()).to.equal(winners.BLACK);
       expect(highCardSpy).to.have.been.calledOnce;
     });
   });

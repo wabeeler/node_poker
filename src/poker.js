@@ -20,14 +20,10 @@
  * get better.
  *
  */
-
-const BLACK = 'black winner';
-const WHITE = 'white winner';
-const TIE = 'tie';
-
 class Poker {
   constructor( black, white ) {
     // Constants used to push winner to caller
+    this.winners = require('./const');
 
     // Hold on to the original hands in case we need to reference them later
     this.black = black;
@@ -47,15 +43,13 @@ class Poker {
     // Check for shortcut and be sure that we don't need to check for the rules
     // with a count of 5 that might be better other hands
     if( blackCount < whiteCount || this.blackHand.score() > this.whiteHand.score() ) {
-      return BLACK;
+      return this.winners.BLACK;
     }
     else if( this.blackHand.score() === this.whiteHand.score() ) {
-      console.log("Comparing winner");
       this.compareEqual();
     }
     else {
-      console.log("WHITE WINS");
-      return WHITE;
+      return this.winners.WHITE;
     }
   }
 
@@ -73,7 +67,7 @@ class Poker {
       case 5:
       case 6:
       case 9:
-        return this.blackHand.getHighCard() > this.whiteHand.getHighCard() ? BLACK : WHITE;
+        return this.blackHand.getHighCard() > this.whiteHand.getHighCard() ? this.winners.BLACK : this.winners.WHITE;
         break;
 
       case 2:
@@ -86,11 +80,11 @@ class Poker {
 
       case 4:
       case 7:
-        return this.blackHand.getGroupValue(3)[0] > this.whiteHand.getGroupValue(3)[0] ? BLACK : WHITE;
+        return this.blackHand.getGroupValue(3)[0] > this.whiteHand.getGroupValue(3)[0] ? this.winners.BLACK : this.winners.WHITE;
         break;
 
       case 8:
-        return this.blackHand.getGroupValue(4)[0] > this.whiteHand.getGroupValue(4)[0] ? BLACK : WHITE;
+        return this.blackHand.getGroupValue(4)[0] > this.whiteHand.getGroupValue(4)[0] ? this.winners.BLACK : this.winners.WHITE;
         break;
     }
   }
@@ -98,15 +92,15 @@ class Poker {
   compareHighCards() {
     let black = this.blackHand.getValueArray().reverse();
     let white = this.whiteHand.getValueArray().reverse();
-    let winner = TIE;
+    let winner = this.winners.TIE;
 
     black.some( (value, idx) => {
       if( value > white[idx] ) {
-        winner = BLACK;
+        winner = this.winners.BLACK;
         return true; // this breaks the some loop
       }
       else if( value < white[idx] ) {
-        winner = WHITE;
+        winner = this.winners.WHITE;
         return true;
       }
     });
@@ -119,10 +113,10 @@ class Poker {
     let whitePair = this.whiteHand.getGroupValue(2)[0];
 
     if( blackPair > whitePair ) {
-      return BLACK;
+      return this.winners.BLACK;
     }
     else if( blackPair < whitePair ) {
-      return WHITE;
+      return this.winners.WHITE;
     }
     else {
       return this.compareHighCards();
@@ -133,7 +127,7 @@ class Poker {
     // these will be unordered arrays of the pair values
     let black = this.blackHand.getGroupValue(2);
     let white = this.whiteHand.getGroupValue(2);
-    let winner = TIE;
+    let winner = this.winners.TIE;
 
     // TODO turn this sort into a unitily function
     // these are now sorted descending
@@ -142,16 +136,16 @@ class Poker {
 
     black.some( (value, idx) => {
       if( value > white[idx] ) {
-        winner = BLACK;
+        winner = this.winners.BLACK;
         return true;
       }
       else if( value < white[idx] ) {
-        winner = WHITE;
+        winner = this.winners.WHITE;
         return true;
       }
     });
 
-    if( winner === TIE ) {
+    if( winner === this.winners.TIE ) {
       winner = this.compareHighCards();
     }
 
