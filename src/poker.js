@@ -41,8 +41,8 @@ class Poker {
   }
 
   determineWinner() {
-    let blackCount = Object.keys(this.blackHand).length;
-    let whiteCount = Object.keys(this.whiteHand).length;
+    let blackCount = this.blackHand.getValueCount();
+    let whiteCount = this.whiteHand.getValueCount();
   
     // Check for shortcut and be sure that we don't need to check for the rules
     // with a count of 5 that might be better other hands
@@ -51,12 +51,19 @@ class Poker {
       console.log("BLACK WINS");
       return this.BLACK;
     }
+    else if( this.blackHand.score() === this.whiteHand.score() {
+      this.compareEqual();
+    }
     else {
       console.log("WHITE WINS");
       return this.WHITE;
     }
 
     // TODO have to account for two hands having the same score
+
+  }
+
+  compareEqual() {
 
   }
 }

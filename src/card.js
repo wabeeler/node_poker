@@ -20,10 +20,10 @@ class Card {
     };
 
     const suits = {
-      'C': true,
-      'D': true,
-      'H': true,
-      'S': true
+      'C': 'CLUBS',
+      'D': 'DIAMONDS',
+      'H': 'HEARTS',
+      'S': 'SPADES'
     };
 
     if( cardStr.length !== 2 || !values.hasOwnProperty(cardStr[0]) || !suits.hasOwnProperty(cardStr[1]) ) {

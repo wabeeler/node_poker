@@ -20,6 +20,7 @@ class Hand {
     this.suits = {}; // Object where the key is the suit abbreviation and the value is the count of that suit in the hand
     this.values = {}; // Object where the key is the card value and the value is the count of said card value in the hand
     this.cards = []; // Array of card objects for each card in the hand
+    this.handScore; // this will be used so that the score only needs to be calculated once
     this.Card = require('./card');
 
     this.convertHand();
@@ -51,19 +52,51 @@ class Hand {
     });
   }
 
-  // Here too we can use the rules to limit what winning we have to test for
+  getValueArray() {
+    // get the values and make sure they are numeric
+    return Object.keys(this.values).map(Number);;
+  }
+
+  getSuitArray() {
+    return Object.keys(this.suits);
+  }
+
+  getValueCount() {
+    return Object.keys(this.values).length;
+  }
+
+  getSuitCount() {
+    return Object.keys(this.suits).length;
+  }
+
+  // The scoring method isn't that complex that we could not just immediately call it
+  // for every hand, but in certain cases it would be more effecient to only call this
+  // method when needed.
+  //
   score() {
-    let cardCount = Object.keys(this.values).length;
+    // This will internally cache the score so we only need to calcualte it once
+    // since this value will not change we can do this.
+    if( this.handScore ) {
+      return this.handScore;
+    }
+
+    return this.calculateScore();
+  }
+
+  // Here too we can use the rules defined in poker to limit what we have to test
+  calculateScore() {
+    let cardCount = this.getValueCount();
     let score = 1;
 
     switch( cardCount ) {
       case 5:
         if( this.hasStraight() ) {
           if( this.hasFlush() ) {
-            score = this.STRAIGHT_FLUSH;
+            score = STRAIGHT_FLUSH;
           }
-        
-          score = STRAIGHT;
+          else {
+            score = STRAIGHT;
+          }
         }
         else if( this.hasFlush() ) {
           score = FLUSH;
@@ -86,19 +119,19 @@ class Hand {
         break;
     }
 
-    console.log("REturning", score);
-
-    return score;
+    this.handScore = score;
+    return this.handScore;
   }
 
+  // TODO handle special case where A,2,3,4,5 is valid straight
   hasStraight() {
-    let cardVals = Object.keys(this.values).map(Number);
+    let cardVals = this.getValueArray();
 
     // sort the array using numbers not strings
     cardVals.sort( (x,y) => { return x - y; });
 
     let isStraight = cardVals.every( (value, idx) => {
-      if( cardVals.length < (idx + 1) ) {
+      if( cardVals.length === (idx + 1) ) {
         // we have reached the end
         return true;
       }
@@ -117,7 +150,7 @@ class Hand {
   }
 
   hasFlush() {
-    return Object.keys(this.suits).length === 1;
+    return this.getSuitCount() === 1;
   }
 
   hasThreeOfAKind() {
