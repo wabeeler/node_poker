@@ -39,14 +39,14 @@ class Poker {
   determineWinner() {
     let blackCount = this.blackHand.getValueCount();
     let whiteCount = this.whiteHand.getValueCount();
-  
+
     // Check for shortcut and be sure that we don't need to check for the rules
     // with a count of 5 that might be better other hands
     if( blackCount < whiteCount || this.blackHand.score() > this.whiteHand.score() ) {
       return this.winners.BLACK;
     }
     else if( this.blackHand.score() === this.whiteHand.score() ) {
-      this.compareEqual();
+      return this.compareEqual();
     }
     else {
       return this.winners.WHITE;
