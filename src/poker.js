@@ -42,7 +42,7 @@ class Poker {
 
     // Check for shortcut and be sure that we don't need to check for the rules
     // with a count of 5 that might be better other hands
-    if( blackCount < whiteCount || this.blackHand.score() > this.whiteHand.score() ) {
+    if( (blackCount < whiteCount && whiteCount !== 5) || this.blackHand.score() > this.whiteHand.score() ) {
       return this.winners.BLACK;
     }
     else if( this.blackHand.score() === this.whiteHand.score() ) {
@@ -61,13 +61,23 @@ class Poker {
     // because we now know that the scores are equal we can branch on one
     switch( this.blackHand.score() ) {
       case 1:
+      case 6:
         return this.compareHighCards();
         break;
 
       case 5:
-      case 6:
       case 9:
-        return this.blackHand.getHighCard() > this.whiteHand.getHighCard() ? this.winners.BLACK : this.winners.WHITE;
+        // When we have consecutive card values, we only need to compare
+        // the highest card to determine the winner
+        if( this.blackHand.getHighCard() === this.whiteHand.getHighCard() ) {
+          return this.winners.TIE;
+        }
+        else if ( this.blackHand.getHighCard() > this.whiteHand.getHighCard() ) {
+          return this.winners.BLACK
+        }
+        else {
+         return this.winners.WHITE;
+        }
         break;
 
       case 2:
@@ -75,7 +85,7 @@ class Poker {
         break;
 
       case 3:
-        return this.comapreTwoPairs();
+        return this.compareTwoPair();
         break;
 
       case 4:

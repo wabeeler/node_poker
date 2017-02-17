@@ -202,7 +202,8 @@ class Hand {
       }
     }
 
-    return values;
+    // ensure that numeric values are returned
+    return values.map(Number);
   }
 
 }

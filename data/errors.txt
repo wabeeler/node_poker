@@ -1,0 +1,8 @@
+8D 3S 4C AH JS KD TH 5R TS 2D
+// Invalid Suit
+
+2C 2D 4H 4C TS SS KD QD 9H 2S
+// Invalid card
+
+5H 6C 7C 8C KD 2C 2D 2H
+// Not enough cards
