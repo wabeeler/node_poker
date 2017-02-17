@@ -19,6 +19,11 @@ input=[FILEPATH] // To change from the default file path
 $ npm run single input=./data/sampleinput.txt
 ```
 
+##### Tests
+```sh
+$ npm run test
+```
+
 ##### NodeJS
 I chose to use NodeJS as a container for this project based on the projects requirement of an input file.  I know node
 has file system operations built in as part of its core.  The other classes contained in this project are generic
